@@ -1,2 +1,19 @@
 <p>news-list works!</p>
 <app-login-bar></app-login-bar>
+<input type="text" placeholder="Search news articles..." [(ngModel)]="searchTerm">
+<select [(ngModel)]="selectedCategory">
+    <option value="">All Categories</option>
+    <option *ngFor="let category of categories" [value]="category">{{ category }}</option>
+</select>
+<ul style="display: flex; flex-wrap: wrap; list-style: none; padding: 0; margin: 0;">
+    <li *ngFor="let article of articles" style="flex: 1 0 21%; box-sizing: border-box; margin: 1%; max-width: 23%; min-width: 200px; display: flex; flex-direction: column; align-items: center; text-align: center;">
+        <img src="https://picsum.photos/100/100" 
+             alt="Article Image" 
+             width="100" 
+             height="100"
+             style="display: block; margin: 0 auto;"
+             (error)="$event.target.src='/favicon.ico'">
+        <h3 style="text-align: center; width: 100%;">{{ article.title }}</h3>
+        <p style="text-align: center; width: 100%;">{{ article.abstract }}</p>
+    </li>
+</ul>
