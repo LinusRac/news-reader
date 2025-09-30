@@ -1,17 +1,20 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { LoginBar } from '../login-bar/login-bar'; // Add this import
+import { LoginBar } from '../login-bar/login-bar';
 import { Article } from '../interfaces/article';
 
 @Component({
   selector: 'app-news-list',
   standalone: true,
-  imports: [FormsModule, CommonModule, LoginBar], // Add LoginBar here
+  imports: [FormsModule, CommonModule, LoginBar],
   templateUrl: './news-list.html',
   styleUrls: ['./news-list.css']
 })
-export class NewsList {
+export class NewsList implements OnInit{
+  ngOnInit(): void {
+  }
+
   searchTerm: string = '';
   selectedCategory: string = '';
   categories: string[] = ['National', 'Economy', 'Sports', 'Technology'];
@@ -62,4 +65,6 @@ export class NewsList {
       image_media_type: ''
     }
   ];
+
+
 }

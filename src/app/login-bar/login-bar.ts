@@ -16,11 +16,13 @@ export class LoginBar implements OnInit {
 
   username: string = '';
   password: string = '';
-  errorMessage: any = null;
+  errorMessage: string|null = null;
+  welcomeMessage: string = '';
+  tmp: any;
 
 
 
-  constructor(private loginService: LoginService) {}
+  constructor(public loginService: LoginService) {}
 
   ngOnInit(): void {}
 
@@ -29,7 +31,14 @@ export class LoginBar implements OnInit {
       console.log('Logging in with', this.username, this.password);
       
       this.loginService.login(this.username, this.password).subscribe({
-          next: (user: User) => console.log('User:', user),   // when a value arrives
+          next: (user: User) => {
+            console.log(this.loginService.getUser());
+            
+            this.tmp = this.loginService.getUser();
+            console.log(this.tmp)
+            
+            this.welcomeMessage = "Hello " + this.loginService.getUser()?.Username;
+          },   // when a value arrives
           error: (err) => {
             this.errorMessage = "Wrong Username or Password";
           },   // if something goes wrong

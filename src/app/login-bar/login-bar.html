@@ -1,9 +1,7 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <a class="navbar-brand" href="#">MyApp</a>
-
-  <div class="collapse navbar-collapse justify-content-end">
+  <div class="collapse navbar-collapse justify-content-center">
     <form class="form-inline d-flex align-items-center" (ngSubmit)="onLogin()">
-      <div class="d-flex flex-row">
+      <div *ngIf="!loginService.isLogged()" class="d-flex flex-row">
         <input
           class="form-control me-2"
           type="text"
@@ -23,6 +21,9 @@
         <button class="btn btn-outline-success" type="submit">
           Login
         </button>
+      </div>
+      <div *ngIf="loginService.isLogged()" class="d-flex flex-row">
+        {{welcomeMessage}}
       </div>
     </form>
   </div>
