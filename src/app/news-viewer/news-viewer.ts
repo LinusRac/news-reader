@@ -68,9 +68,12 @@ export class NewsViewer implements OnInit, OnChanges {
     this.newsService.getArticle(id).subscribe({
       next: (article) => {
         this.article = article;
+        
+        // Look up the username by user ID if available
         if (article.id_user) {
           this.loadUsername(article.id_user);
         }
+        
         this.isLoading = false;
       },
       error: (err) => {

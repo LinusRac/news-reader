@@ -26,7 +26,6 @@ export class NewsEditor implements OnInit {
     abstract: '',
     body: '',
     category: '',
-    author: '',
     update_date: new Date().toISOString(),
     modificationDate: new Date().toISOString()
   };
@@ -79,11 +78,6 @@ export class NewsEditor implements OnInit {
     this.feedbackMessage = '';
 
     try {
-      // Set author if not already set
-      if (!this.article.author) {
-        this.article.author = 'Anonymous'; // You can get this from a user service
-      }
-      
       // Set dates
       if (this.isEditMode) {
         this.article.modificationDate = new Date().toISOString();

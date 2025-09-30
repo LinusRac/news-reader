@@ -47,29 +47,20 @@ export class LoginService {
     this.user = null;
   }
 
-  // Get username by user ID with caching
+  // Get username by user ID - simplified without API since /user endpoint doesn't exist
   getUserById(userId: number): Observable<string> {
     // Check cache first
     if (this.userCache.has(userId)) {
       return of(this.userCache.get(userId)!);
     }
 
-    // If API endpoint exists, use it
-    // const url = `${this.userUrl}/${userId}`;
-    // return this.http.get<User>(url).pipe(
-    //   tap(user => {
-    //     if (user && user.Name) {
-    //       this.userCache.set(userId, user.Name);
-    //     }
-    //   }),
-    //   map(user => user.Name || `User ${userId}`),
-    //   catchError(this.handleUserError<string>(`getUserById id=${userId}`, `User ${userId}`))
-    // );
-
-    // For now, return a default username until API is implemented
-    const defaultUsername = `User ${userId}`;
-    this.userCache.set(userId, defaultUsername);
-    return of(defaultUsername);
+    // Since there's no /user API endpoint, just return a formatted user ID
+    const formattedUsername = `User ${userId}`;
+    
+    // Cache the result to avoid repeated processing
+    this.userCache.set(userId, formattedUsername);
+    
+    return of(formattedUsername);
   }
 
   // Clear user cache when needed
@@ -117,8 +108,6 @@ export class LoginService {
 
     // Console logging for development
     console.error(`[${operation}] Error:`, errorInfo);
-
-    // TODO: Send to remote logging service when ready
     // Example implementations:
     // this.sendToApplicationInsights(errorInfo);
     // this.sendToSentry(errorInfo);

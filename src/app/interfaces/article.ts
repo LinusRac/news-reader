@@ -14,5 +14,4 @@ export interface Article {
     // Fields for article list (list view)
     thumbnail_image?: string;
     thumbnail_media_type?: string;
-    author?: string;
 }

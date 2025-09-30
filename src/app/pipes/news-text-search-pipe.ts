@@ -23,7 +23,7 @@ export class NewsTextSearchPipe implements PipeTransform {
         article.abstract?.toLowerCase().includes(toCompare) ||
         article.subtitle?.toLowerCase().includes(toCompare) ||
         article.body?.toLowerCase().includes(toCompare) ||
-        article.author?.toLowerCase().includes(toCompare)
+        article.category?.toLowerCase().includes(toCompare)
       );
     });
   }
