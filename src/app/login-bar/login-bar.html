@@ -1,4 +1,29 @@
-<p>login-bar works!</p>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="#">MyApp</a>
 
-<textarea placeholder="Username" ></textarea>
-<textarea placeholder="Password"></textarea>
+  <div class="collapse navbar-collapse justify-content-end">
+    <form class="form-inline d-flex align-items-center" (ngSubmit)="onLogin()">
+      <div class="d-flex flex-row">
+        <input
+          class="form-control me-2"
+          type="text"
+          placeholder="Username"
+          [(ngModel)]="username"
+          name="username"
+          required
+        />
+        <input
+          class="form-control me-2"
+          type="password"
+          placeholder="Password"
+          [(ngModel)]="password"
+          name="password"
+          required
+        />
+        <button class="btn btn-outline-success" type="submit">
+          Login
+        </button>
+      </div>
+    </form>
+  </div>
+</nav>
