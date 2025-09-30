@@ -30,7 +30,9 @@
     "@angular/router": "^20.3.0",
     "@ng-bootstrap/ng-bootstrap": "^19.0.1",
     "@popperjs/core": "^2.11.8",
+    "@types/lodash": "^4.17.20",
     "bootstrap": "^5.3.6",
+    "lodash": "^4.17.21",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.15.0"

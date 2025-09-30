@@ -6,6 +6,7 @@ import { NewsViewer } from './news-viewer/news-viewer';
 export const routes: Routes = [
     { path: '', redirectTo: '/list', pathMatch: 'full' },
     { path: 'list', component: NewsList },
-    { path: 'view', component: NewsViewer },
-    { path: 'edit', component: NewsEditor }
+    { path: 'view/:id', component: NewsViewer },
+    { path: 'edit/new', component: NewsEditor },
+    { path: 'edit/:id', component: NewsEditor }
 ];

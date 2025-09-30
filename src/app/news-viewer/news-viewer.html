@@ -1,2 +1,77 @@
-<p>news-viewer works!</p>
-<app-login-bar></app-login-bar>
+<app-login-bar *ngIf="!isPreviewMode"></app-login-bar>
+
+<div class="news-viewer-container">
+  <!-- Loading State -->
+  <div *ngIf="isLoading" class="loading">
+    <p>Loading article...</p>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="error" class="error">
+    <p>{{ error }}</p>
+    <button *ngIf="!isPreviewMode" (click)="goBack()" class="back-button">Back to List</button>
+  </div>
+
+  <!-- Article Content -->
+  <div *ngIf="article && !isLoading && !error" class="article-details">
+    <!-- Navigation (hidden in preview mode) -->
+    <div *ngIf="!isPreviewMode" class="article-header">
+      <button (click)="goBack()" class="back-button">← Back to List</button>
+    </div>
+
+    <!-- Article Image -->
+    <div *ngIf="article.image_data" class="article-image">
+      <img [src]="'data:' + article.image_media_type + ';base64,' + article.image_data" 
+           [alt]="article.title" 
+           class="main-image">
+    </div>
+
+    <!-- Article Content -->
+    <div class="article-content">
+      <!-- Title -->
+      <h1 class="article-title">{{ article.title }}</h1>
+      
+      <!-- Subtitle -->
+      <h2 *ngIf="article.subtitle" class="article-subtitle">{{ article.subtitle }}</h2>
+      
+      <!-- Category -->
+      <div class="article-meta">
+        <span class="category-badge">{{ article.category }}</span>
+      </div>
+      
+      <!-- Abstract -->
+      <div class="article-abstract">
+        <div [innerHTML]="article.abstract"></div>
+      </div>
+      
+      <!-- Body with HTML rendering -->
+      <div *ngIf="article.body" class="article-body" [innerHTML]="article.body"></div>
+    </div>
+
+    <!-- Action Buttons (hidden in preview mode) -->
+    <div *ngIf="!isPreviewMode" class="article-actions mt-4 mb-3">
+      <div class="btn-group" role="group">
+        <button type="button" 
+                class="btn btn-outline-secondary" 
+                (click)="editArticle()">
+          <i class="fas fa-edit me-2"></i>Edit Article
+        </button>
+        <button type="button" 
+                *ngIf="isLoggedIn()"
+                class="btn btn-outline-danger" 
+                (click)="deleteArticle()">
+          <i class="fas fa-trash me-2"></i>Delete Article
+        </button>
+      </div>
+    </div>
+
+    <!-- Article Footer with modification info (simplified in preview mode) -->
+    <div class="article-footer" *ngIf="!isPreviewMode">
+      <div class="modification-info">
+        <p><strong>Last modified:</strong> {{ formatDate(article.update_date) }}</p>
+        <p *ngIf="username"><strong>Modified by:</strong> {{ username }}</p>
+        <p *ngIf="!username"><strong>User ID:</strong> {{ article.id_user }}</p>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,126 @@
+/* Navigation Bar Styles */
+.navbar {
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.navbar-brand {
+  font-weight: bold;
+  font-size: 1.5rem;
+}
+
+.navbar-brand:hover {
+  color: #fff !important;
+}
+
+/* Category Navigation */
+.nav-link {
+  transition: all 0.3s ease;
+  border-radius: 0.375rem;
+  margin: 0 0.25rem;
+}
+
+.nav-link:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  transform: translateY(-1px);
+}
+
+.nav-link.active {
+  background-color: rgba(255, 255, 255, 0.2);
+  font-weight: bold;
+}
+
+/* Search Form */
+.input-group {
+  min-width: 250px;
+}
+
+@media (max-width: 991.98px) {
+  .input-group {
+    min-width: 100%;
+    margin-bottom: 1rem;
+  }
+}
+
+/* Create Button */
+.btn-success {
+  transition: all 0.3s ease;
+}
+
+.btn-success:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+/* Login Wrapper */
+.login-wrapper {
+  min-width: 200px;
+}
+
+@media (max-width: 991.98px) {
+  .login-wrapper {
+    min-width: 100%;
+    margin-top: 1rem;
+  }
+}
+
+/* Mobile Navigation Improvements */
+@media (max-width: 991.98px) {
+  .navbar-nav {
+    margin-bottom: 1rem;
+  }
+  
+  .nav-item {
+    margin-bottom: 0.5rem;
+  }
+  
+  .d-flex.flex-column {
+    width: 100%;
+  }
+}
+
+/* Active Filters */
+.alert {
+  border-radius: 0.5rem;
+  border: none;
+}
+
+.badge {
+  font-size: 0.8rem;
+}
+
+/* Animation for mobile menu */
+.navbar-collapse {
+  transition: all 0.3s ease;
+}
+
+/* Hover effects for mobile items */
+@media (max-width: 991.98px) {
+  .nav-link:hover {
+    background-color: rgba(0, 123, 255, 0.1);
+  }
+}
+
+/* Focus states for accessibility */
+.nav-link:focus,
+.btn:focus,
+.form-control:focus {
+  outline: 2px solid #fff;
+  outline-offset: 2px;
+}
+
+/* Icon spacing */
+.fas {
+  width: 1rem;
+  text-align: center;
+}
+
+/* Responsive text */
+@media (max-width: 576px) {
+  .navbar-brand {
+    font-size: 1.2rem;
+  }
+  
+  .input-group {
+    min-width: 100%;
+  }
+}

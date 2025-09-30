@@ -1,0 +1,118 @@
+<!-- Responsive Navigation Bar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
+  <div class="container">
+    <!-- Brand/Logo -->
+    <a class="navbar-brand" href="#" (click)="onCategorySelect('All'); closeNavigation()">
+      <i class="fas fa-newspaper me-2"></i>
+    </a>
+    
+    <!-- Mobile Toggle Button -->
+    <button 
+      class="navbar-toggler" 
+      type="button" 
+      (click)="toggleNavigation()"
+      [attr.aria-expanded]="!isCollapsed"
+      aria-controls="navbarNav"
+      aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    
+    <!-- Navigation Content -->
+    <div class="collapse navbar-collapse" [class.show]="!isCollapsed" id="navbarNav">
+      
+      <!-- Category Navigation -->
+      <ul class="navbar-nav me-auto">
+        <li class="nav-item" *ngFor="let category of categories">
+          <a 
+            class="nav-link"
+            [class.active]="selectedCategory === category"
+            (click)="onCategorySelect(category); closeNavigation()"
+            style="cursor: pointer;">
+            <i 
+              class="fas me-1"
+              [class.fa-list]="category === 'All'"
+              [class.fa-flag]="category === 'National'"
+              [class.fa-chart-line]="category === 'Economy'"
+              [class.fa-football-ball]="category === 'Sports'"
+              [class.fa-microchip]="category === 'Technology'"></i>
+            {{ category }}
+          </a>
+        </li>
+      </ul>
+      
+      <!-- Search and Actions -->
+      <div class="d-flex flex-column flex-lg-row align-items-lg-center gap-2">
+        
+        <!-- Search Form -->
+        <form class="d-flex me-lg-3" (ngSubmit)="$event.preventDefault()">
+          <div class="input-group">
+            <input 
+              type="text" 
+              class="form-control" 
+              placeholder="Search articles..."
+              [(ngModel)]="searchText"
+              (input)="onSearchChange()"
+              name="search">
+            <button 
+              class="btn btn-outline-light" 
+              type="button"
+              (click)="clearSearch()"
+              *ngIf="searchText"
+              title="Clear search">
+              <i class="fas fa-times"></i>
+            </button>
+            <button 
+              class="btn btn-outline-light" 
+              type="button"
+              title="Search">
+              <i class="fas fa-search"></i>
+            </button>
+          </div>
+        </form>
+        
+        <!-- Create Article Button (only when logged in) -->
+        <button 
+          *ngIf="isLoggedIn"
+          class="btn btn-success me-lg-3"
+          (click)="onCreateArticle(); closeNavigation()"
+          title="Create New Article">
+          <i class="fas fa-plus me-2"></i>
+          <span class="d-none d-md-inline">Create Article</span>
+          <span class="d-md-none">Create</span>
+        </button>
+        
+        <!-- Login Component -->
+        <div class="login-wrapper">
+          <app-login-bar></app-login-bar>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- Active Filters Display -->
+<div class="container mb-3" *ngIf="selectedCategory !== 'All' || searchText">
+  <div class="row">
+    <div class="col-12">
+      <div class="alert alert-info d-flex align-items-center justify-content-between">
+        <div>
+          <i class="fas fa-filter me-2"></i>
+          <span>Active filters:</span>
+          <span class="badge bg-primary ms-2" *ngIf="selectedCategory !== 'All'">
+            Category: {{ selectedCategory }}
+          </span>
+          <span class="badge bg-secondary ms-2" *ngIf="searchText">
+            Search: "{{ searchText }}"
+          </span>
+        </div>
+        <button 
+          class="btn btn-outline-primary btn-sm"
+          (click)="onCategorySelect('All'); clearSearch()"
+          title="Clear all filters">
+          <i class="fas fa-times me-1"></i>Clear All
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,2 +1,232 @@
-<app-login-bar></app-login-bar>
-<p>news-editor works!</p>
+<div class="container mt-4">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card">
+        <div class="card-header">
+          <h2 class="mb-0">{{ isEditMode ? 'Edit Article' : 'Create New Article' }}</h2>
+        </div>
+        <div class="card-body">
+          <form #articleForm="ngForm" (ngSubmit)="onSubmit()" novalidate>
+            
+            <!-- Title Field -->
+            <div class="form-group mb-3">
+              <label for="title" class="form-label">Title <span class="text-danger">*</span></label>
+              <input
+                type="text"
+                id="title"
+                name="title"
+                class="form-control"
+                [(ngModel)]="article.title"
+                #title="ngModel"
+                required
+                maxlength="100"
+                [class.is-invalid]="title.invalid && title.touched"
+                placeholder="Enter article title">
+              <div class="invalid-feedback" *ngIf="title.invalid && title.touched">
+                <div *ngIf="title.errors?.['required']">Title is required.</div>
+                <div *ngIf="title.errors?.['maxlength']">Title must be less than 100 characters.</div>
+              </div>
+            </div>
+
+            <!-- Subtitle Field -->
+            <div class="form-group mb-3">
+              <label for="subtitle" class="form-label">Subtitle <span class="text-danger">*</span></label>
+              <input
+                type="text"
+                id="subtitle"
+                name="subtitle"
+                class="form-control"
+                [(ngModel)]="article.subtitle"
+                #subtitle="ngModel"
+                required
+                maxlength="150"
+                [class.is-invalid]="subtitle.invalid && subtitle.touched"
+                placeholder="Enter article subtitle">
+              <div class="invalid-feedback" *ngIf="subtitle.invalid && subtitle.touched">
+                <div *ngIf="subtitle.errors?.['required']">Subtitle is required.</div>
+                <div *ngIf="subtitle.errors?.['maxlength']">Subtitle must be less than 150 characters.</div>
+              </div>
+            </div>
+
+            <!-- Abstract Field -->
+            <div class="form-group mb-3">
+              <label for="abstract" class="form-label">Abstract <span class="text-danger">*</span></label>
+              <textarea
+                id="abstract"
+                name="abstract"
+                class="form-control"
+                rows="3"
+                [(ngModel)]="article.abstract"
+                #abstract="ngModel"
+                required
+                maxlength="500"
+                [class.is-invalid]="abstract.invalid && abstract.touched"
+                placeholder="Enter article abstract (brief summary)"></textarea>
+              <div class="invalid-feedback" *ngIf="abstract.invalid && abstract.touched">
+                <div *ngIf="abstract.errors?.['required']">Abstract is required.</div>
+                <div *ngIf="abstract.errors?.['maxlength']">Abstract must be less than 500 characters.</div>
+              </div>
+              <small class="form-text text-muted">{{ abstract.value?.length || 0 }}/500 characters</small>
+            </div>
+
+            <!-- Category Selection -->
+            <div class="form-group mb-3">
+              <label for="category" class="form-label">Category <span class="text-danger">*</span></label>
+              
+              <select
+                id="category"
+                name="category"
+                class="form-control"
+                [(ngModel)]="article.category"
+                #category="ngModel"
+                required
+                [class.is-invalid]="category.invalid && category.touched">
+                <option value="">Select a category</option>
+                <option value="National">National</option>
+                <option value="international">International</option>
+                <option value="Economy">Economy</option>
+                <option value="Sports">Sports</option>
+                <option value="Technology">Technology</option>
+                <option value="Politics">Politics</option>
+                <option value="Health">Health</option>
+                <option value="Entertainment">Entertainment</option>
+              </select>
+              <div class="invalid-feedback" *ngIf="category.invalid && category.touched">
+                <div *ngIf="category.errors?.['required']">Category is required.</div>
+              </div>
+            </div>
+
+            <!-- Image Selection -->
+            <div class="form-group mb-3">
+              <label class="form-label">Image <span class="text-danger">*</span></label>
+              
+              <!-- File Upload -->
+              <div class="mb-2">
+                <label for="imageFile" class="form-label">Upload Image File</label>
+                <input
+                  type="file"
+                  id="imageFile"
+                  name="imageFile"
+                  class="form-control"
+                  accept="image/*"
+                  (change)="fileChangeEvent($event)">
+                <small class="form-text text-muted">Supported formats: PNG, JPG (Max 20MB)</small>
+              </div>
+              
+              <!-- Image Error Message -->
+              <div *ngIf="imageError" class="alert alert-danger mt-2">
+                <i class="fas fa-exclamation-circle me-2"></i>
+                {{ imageError }}
+              </div>
+              
+              <!-- Image Preview -->
+              <div class="mt-3" *ngIf="isImageSaved">
+                <label class="form-label">Preview:</label>
+                <div class="image-preview">
+                  <!-- Uploaded Image Preview -->
+                  <img *ngIf="isImageSaved && cardImageBase64" 
+                       [src]="cardImageBase64" 
+                       alt="Uploaded preview" 
+                       class="img-thumbnail" 
+                       style="max-width: 200px; max-height: 150px;">
+                </div>
+              </div>
+              
+              <!-- Validation for required image -->
+              <div class="invalid-feedback d-block" *ngIf="!isImageSaved">
+                Please upload an image file.
+              </div>
+            </div>
+
+            <!-- Body Field with HTML Editor -->
+            <div class="form-group mb-3">
+              <label for="body" class="form-label">Body (HTML format allowed)</label>
+              <textarea
+                id="body"
+                name="body"
+                class="form-control"
+                rows="8"
+                [(ngModel)]="article.body"
+                #body="ngModel"
+                placeholder="Enter article body content. You can use HTML tags for formatting.">
+              </textarea>
+              <small class="form-text text-muted">
+                You can use HTML tags like &lt;p&gt;, &lt;strong&gt;, &lt;em&gt;, &lt;ul&gt;, &lt;li&gt;, etc.
+              </small>
+              <!-- HTML Preview -->
+              <div class="mt-3" *ngIf="article.body">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                  <h6>Preview:</h6>
+                  <button 
+                    type="button" 
+                    class="btn btn-outline-info btn-sm"
+                    (click)="togglePreview()">
+                    <i class="fas" [class.fa-eye]="!showPreview" [class.fa-code]="showPreview"></i>
+                    {{ showPreview ? 'Show HTML' : 'Show Full Preview' }}
+                  </button>
+                </div>
+                
+                <!-- Simple HTML Preview -->
+                <div *ngIf="!showPreview" class="border p-3 bg-light" [innerHTML]="article.body"></div>
+                
+                <!-- Full Article Preview using NewsViewer -->
+                <div *ngIf="showPreview" class="preview-container border rounded">
+                  <app-news-viewer 
+                    [previewArticle]="previewArticle" 
+                    [isPreviewMode]="true">
+                  </app-news-viewer>
+                </div>
+              </div>
+            </div>
+
+            <!-- Form Actions -->
+            <div class="form-group d-flex justify-content-between">
+              <button 
+                type="button" 
+                class="btn btn-secondary"
+                (click)="goBack()"
+                [disabled]="isSubmitting">
+                <i class="fas fa-arrow-left me-2"></i>Back to Main Page
+              </button>
+              
+              <!-- Debug: Test API Connection -->
+              <button 
+                type="button" 
+                class="btn btn-info btn-sm" 
+                (click)="testApiConnection()"
+                title="Test API Connection">
+                <i class="fas fa-network-wired me-1"></i> Test API
+              </button>
+              
+              <button 
+                type="submit" 
+                class="btn btn-primary"
+                [disabled]="articleForm.invalid || isSubmitting || !isImageSaved">
+                <span *ngIf="isSubmitting" class="spinner-border spinner-border-sm me-2"></span>
+                <i *ngIf="!isSubmitting" class="fas fa-save me-2"></i>
+                {{ isSubmitting ? 'Saving...' : (isEditMode ? 'Update Article' : 'Create Article') }}
+              </button>
+            </div>
+
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Success/Error Messages -->
+  <div class="row justify-content-center mt-3" *ngIf="feedbackMessage">
+    <div class="col-md-8">
+      <div class="alert" 
+           [class.alert-success]="feedbackType === 'success'"
+           [class.alert-danger]="feedbackType === 'error'"
+           [class.alert-info]="feedbackType === 'info'">
+        <i class="fas" 
+           [class.fa-check-circle]="feedbackType === 'success'"
+           [class.fa-exclamation-circle]="feedbackType === 'error'"
+           [class.fa-info-circle]="feedbackType === 'info'"></i>
+        {{ feedbackMessage }}
+      </div>
+    </div>
+  </div>
+</div>
