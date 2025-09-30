@@ -98,10 +98,18 @@ export class NewsList implements OnInit {
   }
 
   editArticle(articleId: number): void {
+    if (!this.loginService.isLogged()) {
+      alert('You must be logged in to edit articles.');
+      return;
+    }
     this.router.navigate(['/edit', articleId]);
   }
 
   createArticle(): void {
+    if (!this.loginService.isLogged()) {
+      alert('You must be logged in to create articles.');
+      return;
+    }
     this.router.navigate(['/edit/new']);
   }
   

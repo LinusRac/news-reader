@@ -118,6 +118,11 @@ export class NewsViewer implements OnInit, OnChanges {
 
   // Navigate to edit page
   editArticle(): void {
+    if (!this.isLoggedIn()) {
+      alert('You must be logged in to edit articles.');
+      return;
+    }
+
     if (this.article) {
       this.router.navigate(['/edit', this.article.id]);
     }

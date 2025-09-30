@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Article } from '../interfaces/article';
 import { NewsService } from '../services/news-service';
+import { LoginService } from '../services/login.service';
 import { NewsViewer } from '../news-viewer/news-viewer';
 import * as _ from 'lodash';
 
@@ -18,6 +19,7 @@ export class NewsEditor implements OnInit {
   private router = inject(Router);
   private route = inject(ActivatedRoute);
   private newsService = inject(NewsService);
+  private loginService = inject(LoginService);
 
   article: Article = {
     id: 0,
@@ -45,6 +47,13 @@ export class NewsEditor implements OnInit {
   previewArticle: Article | null = null;
 
   ngOnInit(): void {
+    // Check if user is logged in
+    if (!this.loginService.isLogged()) {
+      alert('You must be logged in to access the editor.');
+      this.router.navigate(['/list']);
+      return;
+    }
+
     const articleId = this.route.snapshot.paramMap.get('id');
     if (articleId && articleId !== 'new') {
       this.isEditMode = true;
@@ -73,6 +82,13 @@ export class NewsEditor implements OnInit {
 
   onSubmit(): void {
     if (this.isSubmitting) return;
+    
+    // Check authentication before submitting
+    if (!this.loginService.isLogged()) {
+      alert('You must be logged in to save articles.');
+      this.router.navigate(['/list']);
+      return;
+    }
     
     this.isSubmitting = true;
     this.feedbackMessage = '';

@@ -90,7 +90,7 @@
             <p *ngIf="!searchText && selectedCategory === 'All'">
               There are no articles to display. Create your first article to get started!
             </p>
-            <button class="btn btn-primary" (click)="onCreateArticleClicked()">
+            <button *ngIf="isLoggedIn()" class="btn btn-primary" (click)="onCreateArticleClicked()">
               <i class="fas fa-plus me-2"></i>Create First Article
             </button>
           </div>

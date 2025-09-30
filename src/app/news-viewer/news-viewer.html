@@ -52,6 +52,7 @@
     <div *ngIf="!isPreviewMode" class="article-actions mt-4 mb-3">
       <div class="btn-group" role="group">
         <button type="button" 
+                *ngIf="isLoggedIn()"
                 class="btn btn-outline-secondary" 
                 (click)="editArticle()">
           <i class="fas fa-edit me-2"></i>Edit Article
