@@ -244,18 +244,4 @@ export class NewsEditor implements OnInit {
     
     return 'image/jpeg'; // Default fallback
   }
-
-  testApiConnection(): void {
-    console.log('Testing API connection...');
-    this.newsService.testApiConnection().subscribe({
-      next: (response) => {
-        console.log('API test successful:', response);
-        this.showFeedback('API connection successful!', 'success');
-      },
-      error: (error) => {
-        console.error('API test failed:', error);
-        this.showFeedback('API connection failed: ' + error.status + ' ' + error.statusText, 'error');
-      }
-    });
-  }
 }

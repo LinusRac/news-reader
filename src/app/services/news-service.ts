@@ -50,26 +50,6 @@ export class NewsService {
     this.setUserApiKey(this.APIKEY_ANON);
   }
 
-  // Test API connectivity
-  testApiConnection(): Observable<any> {
-    console.log('Testing API connection with headers:', this.httpOptions);
-    return this.http.get(this.newsUrl, this.httpOptions).pipe(
-      tap(response => {
-        console.log('API test successful:', response);
-      }),
-      catchError(error => {
-        console.error('API test failed:', {
-          status: error.status,
-          statusText: error.statusText,
-          url: error.url,
-          message: error.message,
-          headers: this.httpOptions.headers.keys()
-        });
-        throw error;
-      })
-    );
-  }
-
   // Returns the list of news contain elements with the following fields:
   // {"id":...,
   //  "id_user":...,
