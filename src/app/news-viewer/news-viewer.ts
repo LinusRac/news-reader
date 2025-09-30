@@ -139,6 +139,17 @@ export class NewsViewer implements OnInit, OnChanges {
         body: '<p>The tech industry witnessed another milestone today as a <strong>major manufacturer</strong> introduced its revolutionary new smartphone.</p><h3>Key Features</h3><p>The new device boasts impressive specifications:</p><ul><li><strong>Advanced Camera System:</strong> 108MP main sensor with AI enhancement</li><li><strong>Battery Life:</strong> 48-hour usage with fast charging</li><li><strong>Display:</strong> 6.7" OLED with 120Hz refresh rate</li><li><strong>Performance:</strong> Latest generation processor</li></ul><h3>Availability</h3><p>The smartphone will be available in three variants:</p><ol><li>Standard Edition - $799</li><li>Pro Edition - $999</li><li>Pro Max Edition - $1,199</li></ol><p>Pre-orders begin next week, with general availability expected by the end of the month.</p>',
         image_data: '',
         image_media_type: ''
+      },
+      {
+        id: 5,
+        id_user: 105,
+        abstract: 'This article demonstrates that images are completely optional in our news system...',
+        subtitle: 'Testing Optional Images',
+        update_date: '2024-06-15T16:30:00Z',
+        category: 'Technology',
+        title: 'Article Without Image - Optional Images Work!',
+        body: '<p>This article is specifically designed to demonstrate that <strong>images are now completely optional</strong> in our news system.</p><h3>Benefits of Optional Images</h3><ul><li>Faster article creation - no need to find images</li><li>Focus on content quality over visual appeal</li><li>Accessibility for content creators without image resources</li><li>Reduced storage requirements</li></ul><p>As you can see, articles without images display perfectly and maintain a clean, professional appearance.</p><blockquote>Content is king - sometimes a well-written article speaks for itself without needing visual enhancement.</blockquote><p>This change makes our platform more flexible and user-friendly for all types of content creators.</p>'
+        // Note: No image_data or image_media_type fields at all
       }
     ];
 

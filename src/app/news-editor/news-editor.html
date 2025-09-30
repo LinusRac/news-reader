@@ -98,7 +98,8 @@
 
             <!-- Image Selection -->
             <div class="form-group mb-3">
-              <label class="form-label">Image <span class="text-danger">*</span></label>
+              <label class="form-label">Image (Optional)</label>
+              <small class="form-text text-muted">You can add an image to enhance your article, but it's not required.</small>
               
               <!-- File Upload -->
               <div class="mb-2">
@@ -130,11 +131,6 @@
                        class="img-thumbnail" 
                        style="max-width: 200px; max-height: 150px;">
                 </div>
-              </div>
-              
-              <!-- Validation for required image -->
-              <div class="invalid-feedback d-block" *ngIf="!isImageSaved">
-                Please upload an image file.
               </div>
             </div>
 
@@ -201,7 +197,7 @@
               <button 
                 type="submit" 
                 class="btn btn-primary"
-                [disabled]="articleForm.invalid || isSubmitting || !isImageSaved">
+                [disabled]="articleForm.invalid || isSubmitting">
                 <span *ngIf="isSubmitting" class="spinner-border spinner-border-sm me-2"></span>
                 <i *ngIf="!isSubmitting" class="fas fa-save me-2"></i>
                 {{ isSubmitting ? 'Saving...' : (isEditMode ? 'Update Article' : 'Create Article') }}

@@ -91,13 +91,6 @@ export class NewsEditor implements OnInit {
         this.article.author = 'Anonymous'; // You can get this from a user service
       }
       
-      // Ensure we have uploaded image
-      if (!this.isImageSaved) {
-        this.showFeedback('Please upload an image file.', 'error');
-        this.isSubmitting = false;
-        return;
-      }
-
       // Set dates
       if (this.isEditMode) {
         this.article.modificationDate = new Date().toISOString();
