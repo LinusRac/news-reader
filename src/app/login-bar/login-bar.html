@@ -27,3 +27,8 @@
     </form>
   </div>
 </nav>
+
+<div *ngIf="errorMessage" class="alert alert-danger text-center mt-2 mb-0">
+  {{ errorMessage }}
+   <button type="button" class="btn-close" aria-label="Close" (click)="closeError()"></button>
+</div>
