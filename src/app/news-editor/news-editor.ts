@@ -47,23 +47,16 @@ export class NewsEditor implements OnInit {
 
   ngOnInit(): void {
     const articleId = this.route.snapshot.paramMap.get('id');
-    console.log('NewsEditor initialized with articleId:', articleId);
-    
     if (articleId && articleId !== 'new') {
       this.isEditMode = true;
-      console.log('Loading article for editing, ID:', articleId);
       this.loadArticle(+articleId);
-    } else {
-      console.log('Creating new article');
     }
   }
 
   loadArticle(id: number): void {
-    console.log('Loading article from API, ID:', id);
     this.newsService.getArticle(id.toString()).subscribe({
       next: (article) => {
         this.article = { ...article };
-        console.log('Article loaded successfully from API:', article);
         
         // Handle image data if present
         if (article.image_data && article.image_media_type) {
@@ -102,10 +95,8 @@ export class NewsEditor implements OnInit {
       // Make API calls directly
       try {
         if (this.isEditMode) {
-          console.log('Updating article with API:', this.article);
           this.newsService.updateArticle(this.article).subscribe({
             next: (updatedArticle) => {
-              console.log('Article updated successfully via API:', updatedArticle);
               this.showFeedback('Article updated successfully!', 'success');
               this.isSubmitting = false;
               // Navigate back after successful save
@@ -120,22 +111,9 @@ export class NewsEditor implements OnInit {
             }
           });
         } else {
-          console.log('Creating article with API:', this.article);
-          console.log('Article data summary:', {
-            title: this.article.title,
-            category: this.article.category,
-            abstract: this.article.abstract,
-            body: this.article.body,
-            author: this.article.author,
-            hasImageData: !!this.article.image_data,
-            imageDataLength: this.article.image_data?.length,
-            imageMediaType: this.article.image_media_type,
-            isImageSaved: this.isImageSaved
-          });
           
           this.newsService.createArticle(this.article).subscribe({
             next: (createdArticle) => {
-              console.log('Article created successfully via API:', createdArticle);
               this.showFeedback('Article created successfully!', 'success');
               this.isSubmitting = false;
               // Navigate back after successful save
@@ -221,8 +199,6 @@ export class NewsEditor implements OnInit {
   togglePreview(): void {
     this.showPreview = !this.showPreview;
     
-    console.log('Toggle preview:', this.showPreview);
-    
     if (this.showPreview) {
       // Create preview article with current form data
       this.previewArticle = {
@@ -230,7 +206,6 @@ export class NewsEditor implements OnInit {
         image_data: this.cardImageBase64?.split(',')[1] || '', // Remove data:image/png;base64, prefix
         image_media_type: this.cardImageBase64 ? this.getImageMediaType() : ''
       };
-      console.log('Created preview article:', this.previewArticle);
     }
   }
 

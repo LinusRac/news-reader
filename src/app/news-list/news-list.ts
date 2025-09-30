@@ -32,7 +32,6 @@ export class NewsList implements OnInit {
   errorMessage: string = '';
   
   constructor() {
-    console.log('NewsList component initialized with router:', this.router);
   }
   
   ngOnInit(): void {
@@ -77,11 +76,8 @@ export class NewsList implements OnInit {
     this.isLoading = true;
     this.errorMessage = '';
     
-    console.log('Loading articles from API...');
-    
     this.newsService.getArticles().subscribe({
       next: (articles) => {
-        console.log('Articles loaded successfully from API:', articles);
         this.articles = articles || [];
         this.applyFilters(); // Apply current filters
         this.isLoading = false;
@@ -96,39 +92,20 @@ export class NewsList implements OnInit {
   }
 
   viewArticle(articleId: number): void {
-    console.log('=== NAVIGATION DEBUG ===');
-    console.log('Attempting to navigate to article:', articleId);
-    console.log('Router available:', !!this.router);
-    console.log('Current URL:', window.location.href);
-    
-    try {
-      const navigationPromise = this.router.navigate(['/view', articleId]);
-      console.log('Navigation promise created:', navigationPromise);
-      
-      navigationPromise.then(success => {
-        console.log('Navigation completed successfully:', success);
-        console.log('New URL:', window.location.href);
-      }).catch(error => {
-        console.error('Navigation promise rejected:', error);
-      });
-      
-    } catch (error) {
+    this.router.navigate(['/view', articleId]).catch(error => {
       console.error('Navigation error:', error);
-    }
+    });
   }
 
   editArticle(articleId: number): void {
-    console.log('Navigating to edit article:', articleId);
     this.router.navigate(['/edit', articleId]);
   }
 
   createArticle(): void {
-    console.log('Navigating to create new article');
     this.router.navigate(['/edit/new']);
   }
   
   refreshArticles(): void {
-    console.log('Refreshing articles manually...');
     this.loadArticles();
   }
 
@@ -149,7 +126,6 @@ export class NewsList implements OnInit {
   }
 
   onImageError(event: any, article: Article): void {
-    console.log('Image failed to load for article:', article.title);
     // Set fallback to favicon
     event.target.src = '/favicon.ico';
     
@@ -169,17 +145,9 @@ export class NewsList implements OnInit {
       return;
     }
 
-    console.log('=== DELETE ARTICLE COMPONENT DEBUG ===');
-    console.log('Article parameter received:', article);
-    console.log('Article ID from parameter:', article?.id);
-    console.log('Type of article.id:', typeof article?.id);
-
     if (confirm(`Are you sure you want to delete "${article.title}"?`)) {
-      // Pass the ID directly instead of the article object
-      console.log('Calling deleteArticle with ID:', article.id);
       this.newsService.deleteArticle(article.id).subscribe({
         next: () => {
-          console.log('Article deleted successfully');
           // Remove the article from the local arrays
           this.articles = this.articles.filter(a => a.id !== article.id);
           this.applyFilters(); // Refresh the filtered list

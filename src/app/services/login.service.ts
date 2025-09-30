@@ -66,29 +66,10 @@ export class LoginService {
     //   catchError(this.handleUserError<string>(`getUserById id=${userId}`, `User ${userId}`))
     // );
 
-    // For now, use mock data since we don't know the exact API endpoint
-    return this.getMockUserById(userId);
-  }
-
-  // Mock user data for development/testing
-  private getMockUserById(userId: number): Observable<string> {
-    const mockUsers = new Map<number, string>([
-      [101, 'John Smith'],
-      [102, 'Maria Garcia'],
-      [103, 'David Johnson'],
-      [104, 'Sarah Chen'],
-      [105, 'Michael Brown'],
-      [106, 'Emma Wilson'],
-      [107, 'Alex Turner'],
-      [108, 'Lisa Anderson']
-    ]);
-
-    const username = mockUsers.get(userId) || `User ${userId}`;
-    
-    // Cache the result
-    this.userCache.set(userId, username);
-    
-    return of(username);
+    // For now, return a default username until API is implemented
+    const defaultUsername = `User ${userId}`;
+    this.userCache.set(userId, defaultUsername);
+    return of(defaultUsername);
   }
 
   // Clear user cache when needed
@@ -100,11 +81,12 @@ export class LoginService {
   private handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
       this.user = null;
-      // TODO: send the error to remote logging infrastructure
-      console.error(error); // log to console instead
-      // TODO: better job of transforming error for user consumption
-      console.log(`${operation} failed: ${error.message}`);
-      window.alert(`Error: ${operation} failed: ${error.message}`); // erster versuch einer Fehlermeldung
+      
+      // Log error for debugging and future remote logging
+      this.logError(operation, error);
+      
+      // Show user-friendly error message
+      this.showUserError(operation, error);
 
       // Let the app keep running by returning an empty result.
       return of(result as T);
@@ -114,12 +96,76 @@ export class LoginService {
   private handleUserError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
       // For user lookup errors, don't show alerts, just log
-      console.error(error);
-      console.log(`${operation} failed: ${error.message}`);
+      this.logError(operation, error);
       
       // Return the fallback result
       return of(result as T);
     };
   }
+
+  // Centralized error logging - ready for remote logging integration
+  private logError(operation: string, error: any): void {
+    const errorInfo = {
+      timestamp: new Date().toISOString(),
+      operation: operation,
+      message: error.message || 'Unknown error',
+      status: error.status || 'Unknown status',
+      url: error.url || 'Unknown URL',
+      userId: this.user?.apikey || 'Anonymous',
+      userAgent: navigator.userAgent
+    };
+
+    // Console logging for development
+    console.error(`[${operation}] Error:`, errorInfo);
+
+    // TODO: Send to remote logging service when ready
+    // Example implementations:
+    // this.sendToApplicationInsights(errorInfo);
+    // this.sendToSentry(errorInfo);
+    // this.sendToCustomEndpoint(errorInfo);
+  }
+
+  // User-friendly error display
+  private showUserError(operation: string, error: any): void {
+    let userMessage = '';
+    
+    // Transform technical errors into user-friendly messages
+    switch (operation) {
+      case 'login':
+        if (error.status === 401) {
+          userMessage = 'Invalid username or password. Please try again.';
+        } else if (error.status === 0) {
+          userMessage = 'Cannot connect to server. Please check your internet connection.';
+        } else {
+          userMessage = 'Login failed. Please try again later.';
+        }
+        break;
+      
+      default:
+        if (error.status === 0) {
+          userMessage = 'Cannot connect to server. Please check your internet connection.';
+        } else {
+          userMessage = `Operation failed. Please try again later.`;
+        }
+    }
+
+    // TODO: Replace with better UI notification system
+    // Options: Angular Material Snackbar, custom toast, modal dialog
+    window.alert(`Error: ${userMessage}`);
+    
+    // Future implementation examples:
+    // this.snackBar.open(userMessage, 'Close', { duration: 5000 });
+    // this.notificationService.showError(userMessage);
+    // this.modalService.showErrorDialog(userMessage);
+  }
+
+  // Future method for remote logging integration
+  // private sendToCustomEndpoint(errorInfo: any): void {
+  //   const loggingUrl = 'https://your-logging-endpoint.com/api/errors';
+  //   this.http.post(loggingUrl, errorInfo).subscribe({
+  //     next: () => console.log('Error logged successfully'),
+  //     error: (err) => console.warn('Failed to log error remotely:', err)
+  //   });
+  // }
 
 }
