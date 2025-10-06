@@ -41,6 +41,7 @@ export class NewsEditor implements OnInit {
   imageError: string | null = null;
   isImageSaved: boolean = false;
   cardImageBase64: string | null = null;
+  showImageValidation: boolean = false;
 
   // Preview functionality
   showPreview: boolean = false;
@@ -92,6 +93,13 @@ export class NewsEditor implements OnInit {
     if (!this.loginService.isLogged()) {
       alert('You must be logged in to save articles.');
       this.router.navigate(['/list']);
+      return;
+    }
+
+    // Check if image is required and missing
+    if (!this.isImageSaved && !this.cardImageBase64) {
+      this.showImageValidation = true;
+      this.showFeedback('An image is required for all articles.', 'error');
       return;
     }
     
@@ -185,6 +193,7 @@ export class NewsEditor implements OnInit {
           const imgBase64Path = e.target.result;
           this.cardImageBase64 = imgBase64Path;
           this.isImageSaved = true;
+          this.showImageValidation = false; // Reset validation flag when image is uploaded
 
           this.article.image_media_type = fileInput.target.files[0].type;
           const head = this.article.image_media_type!.length + 13;

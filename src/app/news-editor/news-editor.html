@@ -93,20 +93,25 @@
 
             <!-- Image Selection -->
             <div class="form-group mb-3">
-              <label class="form-label">Image (Optional)</label>
-              <small class="form-text text-muted">You can add an image to enhance your article, but it's not required.</small>
+              <label class="form-label">Image <span class="text-danger">*</span></label>
+              <small class="form-text text-muted">An image is required for all articles to enhance readability.</small>
               
               <!-- File Upload -->
               <div class="mb-2">
-                <label for="imageFile" class="form-label">Upload Image File</label>
+                <label for="imageFile" class="form-label">Upload Image File <span class="text-danger">*</span></label>
                 <input
                   type="file"
                   id="imageFile"
                   name="imageFile"
                   class="form-control"
                   accept="image/*"
+                  required
+                  [class.is-invalid]="!isImageSaved && !cardImageBase64 && showImageValidation"
                   (change)="fileChangeEvent($event)">
                 <small class="form-text text-muted">Supported formats: PNG, JPG (Max 20MB)</small>
+                <div class="invalid-feedback" *ngIf="!isImageSaved && !cardImageBase64 && showImageValidation">
+                  Image is required.
+                </div>
               </div>
               
               <!-- Image Error Message -->
@@ -183,7 +188,7 @@
               <button 
                 type="submit" 
                 class="btn btn-primary"
-                [disabled]="articleForm.invalid || isSubmitting">
+                [disabled]="articleForm.invalid || isSubmitting || (!isImageSaved && !cardImageBase64)">
                 <span *ngIf="isSubmitting" class="spinner-border spinner-border-sm me-2"></span>
                 <i *ngIf="!isSubmitting" class="fas fa-save me-2"></i>
                 {{ isSubmitting ? 'Saving...' : (isEditMode ? 'Update Article' : 'Create Article') }}
