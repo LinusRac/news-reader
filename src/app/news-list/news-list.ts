@@ -167,4 +167,10 @@ export class NewsList implements OnInit {
       });
     }
   }
+
+  // Format category name with proper capitalization
+  formatCategoryName(category: string): string {
+    if (!category) return '';
+    return category.charAt(0).toUpperCase() + category.slice(1).toLowerCase();
+  }
 }

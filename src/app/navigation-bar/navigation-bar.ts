@@ -23,7 +23,7 @@ export class NavigationBar implements OnInit {
   @Output() createArticleClicked = new EventEmitter<void>();
   
   // Filter data
-  categories: string[] = ['All', 'National', 'Economy', 'Sports', 'Technology'];
+  categories: string[] = ['All', 'National', 'International', 'Economy', 'Sports', 'Technology'];
   selectedCategory: string = 'All';
   searchText: string = '';
   
@@ -52,6 +52,13 @@ export class NavigationBar implements OnInit {
   clearSearch(): void {
     this.searchText = '';
     this.onSearchChange();
+  }
+  
+  // Category formatting helper
+  formatCategoryName(category: string): string {
+    if (!category) return '';
+    if (category === 'All') return 'All';
+    return category.charAt(0).toUpperCase() + category.slice(1).toLowerCase();
   }
   
   // Article creation

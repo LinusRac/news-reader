@@ -39,7 +39,9 @@
                (mouseleave)="onMouseLeave($event)">
             
             <!-- Image display - using thumbnail fields from list API -->
-            <div *ngIf="article.thumbnail_image" class="article-image">
+            <div *ngIf="article.thumbnail_image" class="article-image" 
+                 (click)="viewArticle(article.id)"
+                 style="cursor: pointer;">
               <img [src]="'data:' + article.thumbnail_media_type + ';base64,' + article.thumbnail_image" 
                    [alt]="article.title" 
                    class="card-img-top"
@@ -48,10 +50,14 @@
             
             
             <div class="card-body d-flex flex-column">
-              <h5 class="card-title">{{ article.title }}</h5>
+              <h5 class="card-title" 
+                  (click)="viewArticle(article.id)"
+                  style="cursor: pointer; color: #0d6efd;"
+                  title="Click to view article details">{{ article.title }}</h5>
+              <h6 class="card-subtitle mb-2 text-muted" *ngIf="article.subtitle">{{ article.subtitle }}</h6>
               <div class="card-text flex-grow-1" [innerHTML]="article.abstract"></div>
               <div class="mb-2">
-                <span class="badge bg-primary">{{ article.category }}</span>
+                <span class="badge bg-primary">{{ formatCategoryName(article.category) }}</span>
               </div>
               
               <!-- Action Buttons -->

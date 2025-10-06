@@ -66,6 +66,11 @@ export class NewsEditor implements OnInit {
       next: (article) => {
         this.article = { ...article };
         
+        // Normalize category capitalization for consistent display
+        if (this.article.category) {
+          this.article.category = this.formatCategoryName(this.article.category);
+        }
+        
         // Handle image data if present
         if (article.image_data && article.image_media_type) {
           this.cardImageBase64 = article.image_data;
@@ -228,5 +233,17 @@ export class NewsEditor implements OnInit {
     if (this.cardImageBase64.includes('data:image/gif')) return 'image/gif';
     
     return 'image/jpeg'; // Default fallback
+  }
+
+  // Category formatting helper
+  formatCategoryName(category: string): string {
+    if (!category) return '';
+    if (category === 'All') return 'All';
+    return category.charAt(0).toUpperCase() + category.slice(1).toLowerCase();
+  }
+
+  // Get available categories for dropdown
+  getAvailableCategories(): string[] {
+    return ['National', 'International', 'Economy', 'Sports', 'Technology'];
   }
 }

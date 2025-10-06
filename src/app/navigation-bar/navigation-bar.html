@@ -32,10 +32,11 @@
               class="fas me-1"
               [class.fa-list]="category === 'All'"
               [class.fa-flag]="category === 'National'"
+              [class.fa-globe]="category === 'International'"
               [class.fa-chart-line]="category === 'Economy'"
               [class.fa-football-ball]="category === 'Sports'"
               [class.fa-microchip]="category === 'Technology'"></i>
-            {{ category }}
+            {{ formatCategoryName(category) }}
           </a>
         </li>
       </ul>
